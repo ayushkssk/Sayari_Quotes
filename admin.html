@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form" id="loginForm">
+            <h2>Admin Login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="checkLogin()">Login</button>
+        </div>
+
+        <div class="admin-panel hidden" id="adminPanel">
+            <div class="admin-header">
+                <h2>Welcome, Ayush!</h2>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+            
+            <div class="post-form">
+                <textarea id="postContent" placeholder="Enter your content..."></textarea>
+                <select id="postType">
+                    <option value="shayari">Shayari</option>
+                    <option value="quote">Quote</option>
+                    <option value="joke">Joke</option>
+                </select>
+                <button onclick="createPost()">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'ayush' && password === 'tunni') {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                localStorage.setItem('isLoggedIn', 'true');
+            } else {
+                alert('Invalid username or password!');
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            localStorage.removeItem('isLoggedIn');
+        }
+
+        // Check if user is already logged in
+        window.onload = function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+            }
+        }
+
+        function createPost() {
+            const content = document.getElementById('postContent').value;
+            const type = document.getElementById('postType').value;
+            
+            if (!content) {
+                alert('Please enter content');
+                return;
+            }
+
+            const post = {
+                content: content,
+                type: type,
+                date: new Date().toLocaleString()
+            };
+
+            // Save post to localStorage
+            let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            posts.unshift(post);
+        }
+    </script>
+</body>
+</html> 

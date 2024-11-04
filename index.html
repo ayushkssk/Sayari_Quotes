@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+
+        nav {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .filters {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .filter-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            background: #2980b9;
+        }
+
+        .filter-btn.active {
+            background: #2c3e50;
+        }
+
+        .post {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <h1>Content Platform</h1>
+            <div>
+                <a href="index.html" class="active">Home</a>
+                <a href="admin.html">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterPosts('all')">All</button>
+            <button class="filter-btn" onclick="filterPosts('shayari')">Shayari</button>
+            <button class="filter-btn" onclick="filterPosts('quote')">Quotes</button>
+            <button class="filter-btn" onclick="filterPosts('joke')">Jokes</button>
+        </div>
+
+        <div id="posts-container" class="posts">
+            <!-- Posts will be loaded here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Replace with your Cloudflare Worker URL
+        const API_URL = 'https://your-worker.your-subdomain.workers.dev';
+
+        async function loadPosts() {
+            try {
+                const response = await fetch(`${API_URL}/posts`);
+                const posts = await response.json();
+                const container = document.getElementById('posts-container');
+                
+                if (posts.length === 0) {
+                    container.innerHTML = '<div class="post"><p>No posts yet!</p></div>';
+                    return;
+                }
+
+                container.innerHTML = posts.map(post => `
+                    <div class="post" data-type="${post.type}">
+                        <div class="post-content">${post.content}</div>
+                        <div class="post-meta">
+                            <span class="post-type">${post.type}</span>
+                            <span class="post-date">${new Date(post.timestamp).toLocaleString()}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                document.getElementById('posts-container').innerHTML = 
+                    '<div class="post"><p>Error loading posts. Please try again later.</p></div>';
+            }
+        }
+
+        // Previous filterPosts function remains the same
+
+        // Load posts when page loads
+        window.onload = loadPosts;
+    </script>
+</body>
+</html> 
