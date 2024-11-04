@@ -480,6 +480,225 @@
             height: 3px;
             background: linear-gradient(to right, #3498db, #e74c3c);
         }
+
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .page-toggle {
+            position: relative;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+        }
+
+        .nav-btn .btn-icon {
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-tooltip {
+            position: absolute;
+            right: 60px;
+            background: var(--card-bg);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: var(--shadow);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-btn:hover .btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+            right: 70px;
+        }
+
+        /* Animation for icon switch */
+        @keyframes rotateIcon {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(0.5); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .nav-btn.switching .btn-icon {
+            animation: rotateIcon 0.5s ease;
+        }
+
+        /* Admin mode styles */
+        .nav-btn.admin-mode {
+            background: #8dc90b;
+        }
+
+        .nav-btn.admin-mode:hover {
+            background: #c0392b;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .floating-nav {
+                right: 10px;
+                top: 10px;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+            }
+
+            .nav-btn .btn-icon {
+                font-size: 20px;
+            }
+
+            .btn-tooltip {
+                display: none;
+            }
+        }
+
+        /* Floating Controls Container */
+        .floating-controls {
+            position: fixed;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        /* Theme Toggle (Top) */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+        }
+
+        /* Navigation Toggle (Bottom) */
+        .nav-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+        }
+
+        /* Floating Button Styles */
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .nav-btn {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nav-btn .btn-icon {
+            font-size: 28px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover Effects */
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Tooltip */
+        .btn-tooltip {
+            position: absolute;
+            right: 70px;
+            background: var(--card-bg);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: var(--shadow);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-btn:hover .btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Animation for icon switch */
+        @keyframes rotateIcon {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(0.5); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .nav-btn.switching .btn-icon {
+            animation: rotateIcon 0.5s ease;
+        }
+
+        /* Admin mode styles */
+        .nav-btn.admin-mode {
+            background: #e74c3c;
+        }
+
+        .nav-btn.admin-mode:hover {
+            background: #c0392b;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+            }
+
+            .nav-btn .btn-icon {
+                font-size: 24px;
+            }
+
+            .btn-tooltip {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -498,14 +717,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Admin Button -->
-            <a href="admin.html" class="floating-admin" title="Admin Panel">
-                <div class="floating-btn admin-btn">
-                    <i>👤</i>
-                    <span class="btn-tooltip">Admin</span>
-                </div>
-            </a>
         </div>
 
         <div class="filters">
@@ -516,6 +727,27 @@
         </div>
 
         <div id="posts-container"></div>
+    </div>
+
+    <!-- Add this floating button structure before closing body tag -->
+    <div class="floating-controls">
+        <!-- Theme Toggle (Top Right) -->
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <div class="theme-toggle-track">
+                <div class="theme-toggle-thumb">
+                    <span id="theme-icon">☀️</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Toggle (Bottom Right) -->
+        <div class="nav-toggle">
+            <a id="navToggle" class="floating-btn nav-btn" onclick="toggleNavigation(event)">
+                <span class="btn-icon">👤</span>
+                <span class="btn-icon home-icon" style="display: none;">🏠</span>
+                <span class="btn-tooltip">Go to Admin</span>
+            </a>
+        </div>
     </div>
 
     <script>
@@ -731,6 +963,60 @@
                     behavior: 'smooth'
                 });
             });
+        });
+
+        function toggleNavigation(event) {
+            event.preventDefault();
+            const navBtn = document.getElementById('navToggle');
+            const adminIcon = navBtn.querySelector('.btn-icon');
+            const homeIcon = navBtn.querySelector('.home-icon');
+            const tooltip = navBtn.querySelector('.btn-tooltip');
+            
+            // Add animation class
+            navBtn.classList.add('switching');
+            
+            // Determine current state and toggle
+            const isAdmin = window.location.pathname.includes('admin.html');
+            
+            if (isAdmin) {
+                // Switch to home
+                setTimeout(() => {
+                    adminIcon.style.display = 'none';
+                    homeIcon.style.display = 'block';
+                    tooltip.textContent = 'Go to Home';
+                    navBtn.classList.add('admin-mode');
+                    window.location.href = 'index.html';
+                }, 250);
+            } else {
+                // Switch to admin
+                setTimeout(() => {
+                    adminIcon.style.display = 'block';
+                    homeIcon.style.display = 'none';
+                    tooltip.textContent = 'Go to Admin';
+                    navBtn.classList.remove('admin-mode');
+                    window.location.href = 'admin.html';
+                }, 250);
+            }
+            
+            // Remove animation class after completion
+            setTimeout(() => {
+                navBtn.classList.remove('switching');
+            }, 500);
+        }
+
+        // Set initial state based on current page
+        document.addEventListener('DOMContentLoaded', () => {
+            const navBtn = document.getElementById('navToggle');
+            const adminIcon = navBtn.querySelector('.btn-icon');
+            const homeIcon = navBtn.querySelector('.home-icon');
+            const tooltip = navBtn.querySelector('.btn-tooltip');
+            
+            if (window.location.pathname.includes('admin.html')) {
+                adminIcon.style.display = 'none';
+                homeIcon.style.display = 'block';
+                tooltip.textContent = 'Go to Home';
+                navBtn.classList.add('admin-mode');
+            }
         });
     </script>
 </body>
