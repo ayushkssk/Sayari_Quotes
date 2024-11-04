@@ -4,139 +4,391 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         nav {
-            background: #2c3e50;
-            color: white;
-            padding: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         nav a {
-            color: white;
+            color: #3498db;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
 
         nav a:hover {
-            background: #34495e;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
+            background: #3498db;
+            color: white;
         }
 
         .filters {
-            margin-bottom: 2rem;
-            text-align: center;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .filter-btn {
-            background: #3498db;
-            color: white;
+            padding: 8px 15px;
             border: none;
-            padding: 8px 16px;
-            margin: 0 5px;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
-        }
-
-        .filter-btn:hover {
-            background: #2980b9;
+            background: white;
+            color: #3498db;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .filter-btn.active {
-            background: #2c3e50;
+            background: #3498db;
+            color: white;
         }
 
         .post {
             background: white;
             padding: 20px;
+            border-radius: 10px;
             margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .post-type {
+            background: #3498db;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .filters {
+                justify-content: center;
+            }
+        }
+
+        .post-reactions {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .reaction-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .reaction-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .reaction-btn.active {
+            color: #e74c3c;
+            background: #ffe6e6;
+        }
+
+        .reaction-btn.heart.active {
+            color: #e74c3c;
+        }
+
+        .reaction-btn.like.active {
+            color: #3498db;
+            background: #e3f2fd;
+        }
+
+        .reaction-count {
+            font-weight: 500;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .reaction-btn.animate {
+            animation: pop 0.3s ease;
+        }
+
+        .share-options {
+            position: absolute;
+            background: white;
+            padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .share-options.active {
+            display: block;
+        }
+
+        .post-time {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-date {
+            font-size: 0.9em;
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <h1>Content Platform</h1>
-            <div>
-                <a href="index.html" class="active">Home</a>
-                <a href="admin.html">Admin</a>
-            </div>
-        </div>
-    </nav>
-
     <div class="container">
+        <nav>
+            <h1>Content Platform</h1>
+            <a href="admin.html">Admin</a>
+        </nav>
+
         <div class="filters">
-            <button class="filter-btn active" onclick="filterPosts('all')">All</button>
+            <button class="filter-btn active" onclick="filterPosts('all')">All Posts</button>
             <button class="filter-btn" onclick="filterPosts('shayari')">Shayari</button>
             <button class="filter-btn" onclick="filterPosts('quote')">Quotes</button>
             <button class="filter-btn" onclick="filterPosts('joke')">Jokes</button>
         </div>
 
-        <div id="posts-container" class="posts">
-            <!-- Posts will be loaded here dynamically -->
-        </div>
+        <div id="posts-container"></div>
     </div>
 
     <script>
-        // Replace with your Cloudflare Worker URL
-        const API_URL = 'https://your-worker.your-subdomain.workers.dev';
-
-        async function loadPosts() {
-            try {
-                const response = await fetch(`${API_URL}/posts`);
-                const posts = await response.json();
-                const container = document.getElementById('posts-container');
-                
-                if (posts.length === 0) {
-                    container.innerHTML = '<div class="post"><p>No posts yet!</p></div>';
-                    return;
-                }
-
-                container.innerHTML = posts.map(post => `
-                    <div class="post" data-type="${post.type}">
-                        <div class="post-content">${post.content}</div>
-                        <div class="post-meta">
-                            <span class="post-type">${post.type}</span>
-                            <span class="post-date">${new Date(post.timestamp).toLocaleString()}</span>
-                        </div>
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            const container = document.getElementById('posts-container');
+            
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="post">
+                        <div class="post-content">No posts yet! 📝</div>
                     </div>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading posts:', error);
-                document.getElementById('posts-container').innerHTML = 
-                    '<div class="post"><p>Error loading posts. Please try again later.</p></div>';
+                `;
+                return;
             }
+
+            container.innerHTML = posts.map((post, index) => `
+                <div class="post" data-type="${post.type}">
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-meta">
+                        <span class="post-type">${post.type}</span>
+                        <span class="post-date">📅 ${formatDate(post.date)}</span>
+                    </div>
+                    <div class="post-reactions">
+                        <button 
+                            onclick="toggleReaction(${index}, 'like')" 
+                            class="reaction-btn like ${post.reaction === 'like' ? 'active' : ''}"
+                            id="likeBtn${index}"
+                        >
+                            👍 <span class="reaction-count">${post.likes || 0}</span>
+                        </button>
+                        <button 
+                            onclick="toggleReaction(${index}, 'heart')" 
+                            class="reaction-btn heart ${post.reaction === 'heart' ? 'active' : ''}"
+                            id="heartBtn${index}"
+                        >
+                            ❤️ <span class="reaction-count">${post.hearts || 0}</span>
+                        </button>
+                        <button onclick="sharePost(${index})" class="reaction-btn share">
+                            🔄 Share
+                        </button>
+                    </div>
+                    <div class="post-time">
+                        <small>Posted: ${formatTime(post.date)}</small>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Previous filterPosts function remains the same
+        // Format date to a more readable format
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        // Format time to a more readable format
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Update the toggle reaction function to respect admin-set counts
+        function toggleReaction(index, type) {
+            const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            const post = posts[index];
+            const currentReaction = post.reaction;
+
+            // Check if user has already reacted
+            const userReactions = JSON.parse(localStorage.getItem('userReactions') || '{}');
+            const postKey = `post_${index}`;
+            const userPreviousReaction = userReactions[postKey];
+
+            // Remove previous reaction if exists
+            if (userPreviousReaction) {
+                if (userPreviousReaction === type) {
+                    // User is un-reacting
+                    delete userReactions[postKey];
+                    post[`${type}s`] = Math.max(0, (post[`${type}s`] || 1) - 1);
+                    post.reaction = null;
+                } else {
+                    // User is changing reaction
+                    post[`${userPreviousReaction}s`] = Math.max(0, (post[`${userPreviousReaction}s`] || 1) - 1);
+                    post[`${type}s`] = (post[`${type}s`] || 0) + 1;
+                    post.reaction = type;
+                    userReactions[postKey] = type;
+                }
+            } else {
+                // New reaction
+                post[`${type}s`] = (post[`${type}s`] || 0) + 1;
+                post.reaction = type;
+                userReactions[postKey] = type;
+            }
+
+            // Save changes
+            localStorage.setItem('posts', JSON.stringify(posts));
+            localStorage.setItem('userReactions', JSON.stringify(userReactions));
+
+            // Animate button
+            const button = document.getElementById(`${type}Btn${index}`);
+            button.classList.add('animate');
+            setTimeout(() => button.classList.remove('animate'), 300);
+
+            // Update UI
+            loadPosts();
+        }
+
+        function filterPosts(type) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const posts = document.querySelectorAll('.post');
+            posts.forEach(post => {
+                if (type === 'all' || post.dataset.type === type) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        function likePost(index) {
+            const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            posts[index].likes = (posts[index].likes || 0) + 1;
+            posts[index].liked = true;
+            localStorage.setItem('posts', JSON.stringify(posts));
+            loadPosts();
+        }
+
+        function sharePost(index) {
+            const shareOptions = document.getElementById(`shareOptions${index}`);
+            shareOptions.classList.toggle('active');
+        }
+
+        function share(platform, index) {
+            const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            const post = posts[index];
+            posts[index].shares = (posts[index].shares || 0) + 1;
+            localStorage.setItem('posts', JSON.stringify(posts));
+
+            let shareUrl = '';
+            const text = encodeURIComponent(post.content);
+
+            switch(platform) {
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${text}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${text}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${text}`;
+                    break;
+            }
+
+            window.open(shareUrl, '_blank');
+            loadPosts();
+        }
+
+        // Close share options when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.share-options') && !e.target.closest('.reaction-btn')) {
+                document.querySelectorAll('.share-options').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+            }
+        });
 
         // Load posts when page loads
         window.onload = loadPosts;
