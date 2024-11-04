@@ -409,6 +409,79 @@
             background: rgba(0,0,0,0.5);
             z-index: 999;
         }
+
+        .floating-home-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-size: 24px;
+        }
+
+        .floating-home-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            background: #2980b9;
+        }
+
+        .floating-home-btn span {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .floating-home-btn:hover span {
+            transform: scale(1.1);
+        }
+
+        /* For mobile devices */
+        @media (max-width: 768px) {
+            .floating-home-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+
+        /* Optional: Add a pulse animation */
+        .floating-home-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #3498db;
+            opacity: 0.4;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.4;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -452,6 +525,10 @@
             </div>
         </div>
     </div>
+
+    <a href="index.html" class="floating-home-btn" title="Go to Home">
+        <span>🏠</span>
+    </a>
 
     <script>
         const API_URL = 'https://your-worker.your-subdomain.workers.dev';
@@ -725,6 +802,23 @@
                 messageDiv.remove();
             }, 3000);
         }
+
+        document.querySelector('.floating-home-btn').addEventListener('click', function(e) {
+            const editForms = document.querySelectorAll('.edit-form');
+            let hasOpenEdits = false;
+
+            editForms.forEach(form => {
+                if (form.style.display === 'block') {
+                    hasOpenEdits = true;
+                }
+            });
+
+            if (hasOpenEdits) {
+                if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
+                    e.preventDefault();
+                }
+            }
+        });
     </script>
 </body>
 </html> 
