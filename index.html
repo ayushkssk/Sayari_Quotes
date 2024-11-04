@@ -207,6 +207,8 @@
             --text-color: #2c3e50;
             --secondary-text: #7f8c8d;
             --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --admin-btn-color: #e74c3c;
+            --admin-btn-hover: #c0392b;
         }
 
         /* Dark Theme Variables */
@@ -217,6 +219,8 @@
             --text-color: #ecf0f1;
             --secondary-text: #bdc3c7;
             --shadow: 0 2px 10px rgba(0,0,0,0.3);
+            --admin-btn-color: #ff6b6b;
+            --admin-btn-hover: #e74c3c;
         }
 
         /* Update existing styles to use variables */
@@ -342,14 +346,167 @@
         .container {
             animation: fadeIn 0.5s ease-out;
         }
+
+        /* Floating Buttons Container */
+        .floating-buttons {
+            position: fixed;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        /* Position theme toggle at top */
+        .theme-toggle {
+            position: static; /* Override previous fixed position */
+            top: auto;
+            right: auto;
+            margin-top: 20px;
+        }
+
+        /* Floating Admin Button */
+        .floating-admin {
+            text-decoration: none;
+        }
+
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .admin-btn {
+            background: #e74c3c; /* Red color for admin */
+            color: white;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Tooltip for admin button */
+        .btn-tooltip {
+            position: absolute;
+            right: 60px;
+            background: var(--card-bg);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: var(--shadow);
+        }
+
+        .floating-btn:hover .btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-5px);
+        }
+
+        /* Animation for buttons */
+        @keyframes floatingAnimation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        .floating-btn:hover {
+            animation: floatingAnimation 2s ease infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .floating-buttons {
+                right: 10px;
+            }
+
+            .floating-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .btn-tooltip {
+                display: none; /* Hide tooltips on mobile */
+            }
+        }
+
+        /* Update nav styles */
+        nav {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        nav h1 {
+            color: var(--text-color);
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        /* Optional: Add a gradient border to nav */
+        nav {
+            position: relative;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #3498db, #e74c3c);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <nav>
             <h1>Content Platform</h1>
-            <a href="admin.html">Admin</a>
         </nav>
+
+        <!-- Add floating buttons -->
+        <div class="floating-buttons">
+            <!-- Theme Toggle -->
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <div class="theme-toggle-track">
+                    <div class="theme-toggle-thumb">
+                        <span id="theme-icon">☀️</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Button -->
+            <a href="admin.html" class="floating-admin" title="Admin Panel">
+                <div class="floating-btn admin-btn">
+                    <i>👤</i>
+                    <span class="btn-tooltip">Admin</span>
+                </div>
+            </a>
+        </div>
 
         <div class="filters">
             <button class="filter-btn active" onclick="filterPosts('all')">All Posts</button>
@@ -359,14 +516,6 @@
         </div>
 
         <div id="posts-container"></div>
-    </div>
-
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <div class="theme-toggle-track">
-            <div class="theme-toggle-thumb">
-                <span id="theme-icon">☀️</span>
-            </div>
-        </div>
     </div>
 
     <script>
